@@ -72,13 +72,12 @@ O desafio inclui duas bases:
 - **Filtros:**
   - Bandeira, Estado, Canal de venda, Departamento, Idade, Faixa de renda, Estado de nascimento
 
-## 📸 Visão dos Dashboards
+## 📸 Visão dos Dashboards  
 
-**🔹 Página 1 - Visão de Vends**  
-🖼️ ![Visão de Vendas](./imagens/visao-vendas.png)
-
-**🔹 Página 2 - Visão de Clientes**  
-🖼️ ![Visão de Clientes](./imagens/visao-clientes.png)
+<p align="center">
+  <img src="./imagens/visao-vendas.png" height="400px">
+  <img src="./imagens/visao-clientes.png" height="400px">
+</p>
 
 ## 🚀 Conclusão
 Este painel permitirá que a equipe de negócios compreenda melhor o comportamento de compra dos clientes, identifique oportunidades de crescimento e otimize as estratégias para aumentar o faturamento do e-commerce. A combinação de métricas detalhadas, filtros interativos e um design intuitivo garantirá uma análise eficiente e tomada de decisão baseada em dados.
