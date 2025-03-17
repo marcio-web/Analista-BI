@@ -54,6 +54,15 @@ Gráfico de Pizza: Distribuição do lucro por segmento de cliente.
 - **Gráfico de Barras**: Evolução do lucro ao longo do tempo.
 - **Gráfico de Colunas**: Comparativo de vendas por país.
 
+## 📸 Visão dos Dashboards  
+
+<p align="center">
+  <img src="./imagens/tela1.png" height="400px">
+  <img src="./imagens/Tela2.png" height="400px">
+  <img src="./imagens/Tela3.png" height="400px">
+</p>
+
+
 ## 📈 Métricas Criadas
 
 - **KPIs em Cartões:**
