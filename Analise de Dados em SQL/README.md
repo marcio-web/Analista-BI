@@ -38,11 +38,15 @@ Este dashboard foi desenvolvido para oferecer **insights práticos e visuais**, 
 
 ```sql
 SELECT
-    gender,
-    COUNT(*) AS quantidade
-FROM leads_basic_details
-GROUP BY gender
-ORDER BY quantidade DESC;
+  Gender,
+  COUNT(*) AS quantidade
+FROM
+   leads_basic_details
+GROUP BY
+  Gender
+ORDER BY
+  quantidade DESC;
+
 ```
 
 ---
@@ -57,8 +61,9 @@ ORDER BY quantidade DESC;
 
 ```sql
 SELECT
-    ROUND(AVG(age), 0) AS media_idade
-FROM leads_basic_details;
+  AVG(Age) AS media_idade
+FROM
+  leads_basic_details;
 ```
 
 ---
@@ -73,11 +78,14 @@ FROM leads_basic_details;
 
 ```sql
 SELECT
-    current_education,
-    COUNT(*) AS quantidade
-FROM leads_basic_details
-GROUP BY current_education
-ORDER BY quantidade DESC;
+  current_education,
+  COUNT(*) AS quantidade
+FROM
+  leads_basic_details
+GROUP BY
+  current_education
+ORDER BY
+  quantidade;
 ```
 
 ---
@@ -91,14 +99,17 @@ ORDER BY quantidade DESC;
 **SQL Usado:**
 
 ```sql
-SELECT
+SELECT 
     language,
-    ROUND(AVG(watched_percentage), 2) AS media_porcentagem
-FROM leads_demo_watched_details
-WHERE watched_percentage > 0.5
-GROUP BY language
-ORDER BY media_porcentagem DESC;
-```
+    AVG(watched_percentage) AS average_watched_percentage
+FROM 
+    leads_demo_watched_details
+WHERE 
+    watched_percentage > 0.5
+GROUP BY 
+    language
+ORDER BY 
+    average_watched_percentage DESC;
 
 ---
 
@@ -112,16 +123,24 @@ ORDER BY media_porcentagem DESC;
 
 ```sql
 SELECT
-    bd.lead_gen_source AS plataforma,
-    DATE(ld.call_done_date) AS data_chamada,
-    COUNT(*) AS chamadas_sucesso
-FROM leads_basic_details bd
-JOIN leads_interaction_details ld ON bd.lead_id = ld.lead_id
-WHERE ld.call_status = 'successful'
-GROUP BY plataforma, data_chamada
-ORDER BY data_chamada;
-```
+    DATE(i.call_done_date) AS call_date,
+    l.lead_gen_source AS platform,
+    COUNT(*) AS total_calls
+FROM leads_basic_details l
+JOIN leads_interaction_details i
+  ON l.lead_id = i.lead_id
+WHERE i.call_status = 'successful'
+GROUP BY
+    DATE(i.call_done_date),
+    l.lead_gen_source
+ORDER BY call_date, platform;
 
+```
+## 📊 **Visualização do Dashboard**  
+
+<p align="center">
+  <img src="./imagens/dash.webp" width="500px">
+</p> 
 ---
 
 ## 📍 Considerações Finais
