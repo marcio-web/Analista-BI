@@ -1,127 +1,141 @@
-                                                         📊 Projeto de Análise de Leads - EdTech
+ # 📊 Dashboard de Aquisição de Leads - EdTech
 
+## 📌 Contexto
 
-📌 Objetivo
-Este projeto tem como objetivo analisar o comportamento e as características dos leads gerados para uma empresa EdTech, com foco na aquisição de novos usuários e no aumento da taxa de conversão. A análise busca fornecer insights que ajudem a equipe de negócios a desenvolver estratégias mais eficazes de prospecção, abordagem e retenção de leads.
+Como analista de dados de uma empresa EdTech, seu principal objetivo é **impulsionar o crescimento da base de usuários** da plataforma. O foco está em compreender o comportamento dos leads, sua origem, engajamento com as demonstrações e etapas do funil de conversão.
 
-🧠 Pergunta de Negócio
-Como os leads se comportam em relação a gênero, escolaridade, origem, interações e interesse nas demonstrações, e como esses fatores influenciam no sucesso da aquisição de novos usuários?
+Este dashboard foi desenvolvido para oferecer **insights práticos e visuais**, permitindo que os times de negócios e marketing tomem decisões baseadas em dados.
 
-📁 Base de Dados
-Foram utilizadas 5 tabelas extraídas do Metabase:
+---
 
-Tabela	                                                    Descrição
-leads_basic_details	                                        Detalhes demográficos e educacionais dos leads
-sales_managers_assigned_leads_details	                    Informações de atribuição de leads para gerentes de vendas
-leads_interaction_details	                                Registro das interações e ligações com os leads
-leads_demo_watched_details	                                Dados sobre sessões de demonstração assistidas pelos leads
-leads_reasons_for_no_interest	                            Motivos declarados para desinteresse em diferentes estágios do funil
+## 🔧 Ferramentas Utilizadas
 
+* **Metabase** (plataforma de BI)
+* **SQL** para manipulação e agregação de dados
+* **Fonte de dados**: Tabelas relacionais do banco
 
+---
 
-📈 Visões do Dashboard e Queries SQL
+## 🎯 Objetivos do Dashboard
 
-✅ Etapa 01: Distribuição de Gênero (Gráfico de Pizza)
-Objetivo: Ver proporção de leads do sexo feminino e masculino
+* Analisar o perfil dos leads (idade, gênero, escolaridade)
+* Avaliar canais de aquisição de usuários
+* Observar o engajamento com as demonstrações
+* Acompanhar o volume de ligações bem-sucedidas por plataforma
+* Gerar base para ações de marketing e vendas
 
-sql
+---
+
+## 📈 Painéis do Dashboard
+
+### 🟢 1) **Distribuição por Gênero**
+
+**Tipo de Gráfico:** Pizza
+**Tabela:** `leads_basic_details`
+**Objetivo:** Visualizar a proporção de leads masculinos e femininos.
+
+**SQL Usado:**
+
+```sql
 SELECT
-  Gender,
-  COUNT(*) AS quantidade
-FROM
-   leads_basic_details
-GROUP BY
-  Gender
-ORDER BY
-  quantidade DESC;
+    gender,
+    COUNT(*) AS quantidade
+FROM leads_basic_details
+GROUP BY gender
+ORDER BY quantidade DESC;
+```
 
-✅ Etapa 02: Média da Idade (Cartão)
-Objetivo: Obter a idade média dos leads
+---
 
-sql
+### 🔢 2) **Média de Idade**
+
+**Tipo de Gráfico:** Cartão
+**Tabela:** `leads_basic_details`
+**Objetivo:** Obter a média de idade dos leads.
+
+**SQL Usado:**
+
+```sql
 SELECT
-  AVG(Age) AS media_idade
-FROM
-  leads_basic_details;
+    ROUND(AVG(age), 0) AS media_idade
+FROM leads_basic_details;
+```
 
-✅ Etapa 03: Leads por Grau de Escolaridade (Gráfico de Barras)
-Objetivo: Contar leads agrupados por grau de instrução
+---
 
-sql
+### 📚 3) **Quantidade de Leads por Grau de Escolaridade**
+
+**Tipo de Gráfico:** Barras
+**Tabela:** `leads_basic_details`
+**Objetivo:** Entender o nível educacional predominante dos leads.
+
+**SQL Usado:**
+
+```sql
 SELECT
     current_education,
     COUNT(*) AS quantidade
 FROM leads_basic_details
-GROUP BY 
-current_education
-ORDER BY 
-quantidade;
+GROUP BY current_education
+ORDER BY quantidade DESC;
+```
 
-✅ Etapa 04: Média de Percentual Assistido por Idioma (Tabela)
-Objetivo: Exibir idiomas com média de visualização acima de 50%
+---
 
-sql
-SELECT 
-    language,
-    AVG(watched_percentage) AS average_watched_percentage
-FROM 
-    leads_demo_watched_details
-WHERE 
-    watched_percentage > 0.5
-GROUP BY 
-    language
-ORDER BY 
-    average_watched_percentage DESC;
+### 🌐 4) **Média de Porcentagem Assistida da Demonstração por Idioma**
 
-✅ Etapa 05: Ligações Atendidas por Plataforma (Gráfico de Linhas)
-Objetivo: Mostrar a evolução de chamadas atendidas por canal de aquisição
+**Tipo de Gráfico:** Tabela
+**Tabela:** `leads_demo_watched_details`
+**Objetivo:** Avaliar o engajamento dos leads com as demonstrações, filtrando apenas os que assistiram mais de 50%.
 
-sql
+**SQL Usado:**
+
+```sql
 SELECT
-    DATE(i.call_done_date) AS call_date,
-    l.lead_gen_source AS platform,
-    COUNT(*) AS total_calls
-FROM leads_basic_details l
-JOIN leads_interaction_details i
-  ON l.lead_id = i.lead_id
-WHERE i.call_status = 'successful'
-GROUP BY
-    DATE(i.call_done_date),
-    l.lead_gen_source
-ORDER BY call_date, platform;
+    language,
+    ROUND(AVG(watched_percentage), 2) AS media_porcentagem
+FROM leads_demo_watched_details
+WHERE watched_percentage > 0.5
+GROUP BY language
+ORDER BY media_porcentagem DESC;
+```
 
-## 📸 Visão do Dashboard
+---
 
-<p align="center">
-  <img src="./imagens/dash.webp" height="400px">
-</p>
+### 📞 5) **Quantidade de Ligações Atendidas por Plataforma ao Longo do Tempo**
+
+**Tipo de Gráfico:** Linhas
+**Tabelas:** `leads_basic_details`, `leads_interaction_details`
+**Objetivo:** Acompanhar os canais mais eficazes em gerar leads que atendem ligações ao longo do tempo.
+
+**SQL Usado:**
+
+```sql
+SELECT
+    bd.lead_gen_source AS plataforma,
+    DATE(ld.call_done_date) AS data_chamada,
+    COUNT(*) AS chamadas_sucesso
+FROM leads_basic_details bd
+JOIN leads_interaction_details ld ON bd.lead_id = ld.lead_id
+WHERE ld.call_status = 'successful'
+GROUP BY plataforma, data_chamada
+ORDER BY data_chamada;
+```
+
+---
+
+## 📍 Considerações Finais
+
+Este dashboard oferece uma **visão abrangente do funil de aquisição de leads**, desde a origem até o comportamento em chamadas e demonstrações. Os dados orientam **ações estratégicas** de marketing e vendas, com o objetivo de:
+
+* **Aumentar a taxa de conversão**
+* **Direcionar recursos para canais mais eficazes**
+* **Melhorar o conteúdo e formato das demonstrações**
+* **Segmentar campanhas conforme perfil dos leads**
+
+---
+
+Se desejar, posso montar o layout visual em wireframe ou sugerir filtros e interações adicionais para o dashboard. Deseja isso?
+                                                 
 
 
-🧮 Métricas e Indicadores
-Métrica	                                       Descrição
-Total de Leads	                               Contagem total de leads cadastrados
-Distribuição de Gênero	                       Proporção de leads do sexo feminino e masculino
-Média de Idade	                               Cálculo da idade média dos leads
-Leads por Grau de Escolaridade	               Agrupamento por nível educacional atual
-Leads por Plataforma de Origem	               Volume de ligações recebidas por canal de aquisição
-Média de Percentual Assistido	               Percentual médio de demonstração assistida por idioma
-Evolução de Chamadas Atendidas	               Número de chamadas com sucesso ao longo do tempo
-
-
-🧠 Insights de Negócio
-
-A maioria dos leads está no nível de Bacharelado, indicando público com forte base educacional.
-
-22 anos é a idade média, revelando um público jovem e propenso a cursos online.
-
-Plataformas como redes sociais e indicações geram grande volume de ligações bem-sucedidas.
-
-A maior parte dos leads assiste às demonstrações em Telugu, mas o potencial de crescimento está em Inglês, que tem baixa média de engajamento.
-
-A análise temporal de ligações ajuda a identificar melhores períodos para contato e impacto de campanhas específicas.
-
-🛠️ Tecnologias Utilizadas
-Ferramenta	                Uso
-Metabase	                Consultas SQL e construção do dashboard
-SQL	                        Filtragem, agrupamentos, cálculos e ordenações
-Notion / Documentação	    Planejamento analítico e organização dos dados
