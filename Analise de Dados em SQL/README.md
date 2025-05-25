@@ -154,7 +154,6 @@ Este dashboard oferece uma **visão abrangente do funil de aquisição de leads*
 
 ---
 
-Se desejar, posso montar o layout visual em wireframe ou sugerir filtros e interações adicionais para o dashboard. Deseja isso?
                                                  
 
 
